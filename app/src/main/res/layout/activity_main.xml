@@ -43,4 +43,20 @@
         android:layout_height="wrap_content"
         tools:ignore="OnClick" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GIF TEST"
+        android:id="@+id/gifbutton"
+        android:onClick="testFunc"
+/>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/giphy"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>
