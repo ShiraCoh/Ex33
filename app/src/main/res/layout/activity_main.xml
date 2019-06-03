@@ -22,7 +22,8 @@
         android:id="@+id/planets_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_below="@id/text"
+        android:layout_centerInParent="true"
 
         />
 
@@ -32,11 +33,13 @@
         android:id="@+id/answersList"
         android:layout_below="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content">
+
+    </ListView>
 
     <Button
         android:id="@+id/btn"
-        android:text="get"
+        android:text="START"
         android:layout_alignParentBottom="true"
         android:onClick="getQuestion"
         android:layout_width="match_parent"

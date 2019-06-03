@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     Server.Question currentQuestion;
     Button b;
+    Spinner spinner;
+    ArrayAdapter<CharSequence> spinnerAdapter;
+    int quesCnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         question = findViewById(R.id.text);
         answersList = findViewById(R.id.answersList);
+
+        spinner = (Spinner) findViewById(R.id.planets_spinner);
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.CHOICES,
+                android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+" Selected", Toast.LENGTH_LONG).show();
+                quesCnt = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
@@ -41,9 +64,12 @@ public class MainActivity extends AppCompatActivity {
                 String chosen = (String)adapterView.getItemAtPosition(position);
                 if(currentQuestion.correctAnswer.equals(chosen)){
                     Toast.makeText(adapterView.getContext(), "right!", Toast.LENGTH_LONG).show();
+                        getQuestion(view);
                 } else{
                     Toast.makeText(adapterView.getContext(), "wrong!", Toast.LENGTH_LONG).show();
+                        getQuestion(view);
                 }
+
             }
         });
 
@@ -51,18 +77,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getQuestion(View view) {
-        Server.getTriviaQuestion(new Server.HandleQuestion() {
-            @Override
-            public void handleQuestion(Server.Question q) {
-                currentQuestion = q;
-                question.setText(Html.fromHtml(q.question));
-                adapter.clear();
-                for(String a: q.answers){
-                    adapter.add(a);
+        spinner.setVisibility(View.GONE);
+        findViewById(R.id.btn).setVisibility(View.GONE);
+            Server.getTriviaQuestion(new Server.HandleQuestion() {
+                @Override
+                public void handleQuestion(Server.Question q) {
+                    currentQuestion = q;
+                    question.setText(Html.fromHtml(q.question));
+                    adapter.clear();
+                    for (String a : q.answers) {
+                        adapter.add(a);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
-            }
-        });
+            });
     }
 
     public void testFunc(View view) {

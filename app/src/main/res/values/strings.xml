@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string-array name="CHOICES">
+        <item>5 questions</item>
+        <item>10 questions</item>
+        <item>15 questions</item>
+        <item>20 questions</item>
+   </string-array>
 </resources>
