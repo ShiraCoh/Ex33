@@ -1,5 +1,7 @@
 package com.example.android.myapplication;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -26,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
     Button b;
     Spinner spinner;
     ArrayAdapter<CharSequence> spinnerAdapter;
-    int quesCnt;
-
+    int quesCnt=0;
+    int answerdQues=0;
+    int correctanswers=0;
+    MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.score).setVisibility(View.GONE);
+        mp = MediaPlayer.create(MainActivity.this,R.raw.elevator);
+         mp.setLooping(true);
+        mp.start();
         question = findViewById(R.id.text);
         answersList = findViewById(R.id.answersList);
 
@@ -44,7 +52,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+" Selected", Toast.LENGTH_LONG).show();
-                quesCnt = position;
+                switch (position){
+                    case 0:
+                        quesCnt = 5;
+                        break;
+                    case 1:
+                        quesCnt = 10;
+                        break;
+                    case 2:
+                        quesCnt = 15;
+                        break;
+                    case 3:
+                        quesCnt = 20;
+                        break;
+                }
+
             }
 
             @Override
@@ -53,30 +75,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new ArrayList<String>());
-        answersList.setAdapter(adapter);
-        answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String chosen = (String)adapterView.getItemAtPosition(position);
-                if(currentQuestion.correctAnswer.equals(chosen)){
-                    Toast.makeText(adapterView.getContext(), "right!", Toast.LENGTH_LONG).show();
-                        getQuestion(view);
-                } else{
-                    Toast.makeText(adapterView.getContext(), "wrong!", Toast.LENGTH_LONG).show();
-                        getQuestion(view);
-                }
 
-            }
-        });
+            adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1,
+                    new ArrayList<String>());
+
+
+                answersList.setAdapter(adapter);
+                answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        String chosen = (String) adapterView.getItemAtPosition(position);
+                        if (currentQuestion.correctAnswer.equals(chosen)) {
+                            Toast.makeText(adapterView.getContext(), "right!", Toast.LENGTH_LONG).show();
+                            answerdQues++;
+                            correctanswers++;
+                          //  if(answerdQues == quesCnt)
+                          //      finishRound(view, correctanswers, quesCnt);
+                          //  getQuestion(view);
+                        } else {
+                            Toast.makeText(adapterView.getContext(), "wrong!", Toast.LENGTH_LONG).show();
+                            answerdQues++;
+                           // if(answerdQues == quesCnt)
+                              //  finishRound(view, correctanswers, quesCnt);
+                          //  getQuestion(view);
+                        }
+
+                        if(answerdQues == quesCnt){//round finished
+                            Intent intent = new Intent(getApplicationContext(),results.class);
+                            intent.putExtra("SCORE",correctanswers);
+                            intent.putExtra("NumOfQuest",quesCnt);
+                            startActivity(intent);
+                        }
+                        getQuestion(view);
+                    }
+                });
 
 
     }
 
+        public void finishRound(View view, int score, int quesNum){
+
+        }
     public void getQuestion(View view) {
+
         spinner.setVisibility(View.GONE);
         findViewById(R.id.btn).setVisibility(View.GONE);
             Server.getTriviaQuestion(new Server.HandleQuestion() {
@@ -93,10 +136,5 @@ public class MainActivity extends AppCompatActivity {
             });
     }
 
-    public void testFunc(View view) {
 
-        b = findViewById(R.id.gifbutton);
-        gif_end = findViewById(R.id.gif);
-        gif_end.setVisibility(View.VISIBLE);
-    }
 }
