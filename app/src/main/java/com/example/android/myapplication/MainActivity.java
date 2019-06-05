@@ -4,24 +4,22 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import pl.droidsonroids.gif.GifImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView question;
-
+    TextView answers;
     ListView answersList;
     ArrayAdapter<String> adapter;
     Server.Question currentQuestion;
@@ -36,8 +34,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.score).setVisibility(View.GONE);
+        
         mp = MediaPlayer.create(MainActivity.this,R.raw.elevator);
          mp.setLooping(true);
+        
         mp.start();
         question = findViewById(R.id.text);
         answersList = findViewById(R.id.answersList);
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.planets_spinner);
         spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.CHOICES,
                 android.R.layout.simple_spinner_item);
+        
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                        if(answerdQues == quesCnt){//round finished
+                        if(answerdQues == quesCnt){ //round finished
                             Intent intent = new Intent(getApplicationContext(),results.class);
                             intent.putExtra("SCORE",correctanswers);
                             intent.putExtra("NumOfQuest",quesCnt);
