@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/score"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="200dp"
         android:text="TRY AGAIN"
         android:onClick="Restart"
 
@@ -44,6 +44,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/giphy"
         android:visibility="gone"
+        android:scaleType="fitXY"
         />
 
 </RelativeLayout>

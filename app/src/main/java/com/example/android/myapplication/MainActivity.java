@@ -21,11 +21,10 @@ import pl.droidsonroids.gif.GifImageView;
 public class MainActivity extends AppCompatActivity {
 
     TextView question;
-    GifImageView gif_end;
+
     ListView answersList;
     ArrayAdapter<String> adapter;
     Server.Question currentQuestion;
-    Button b;
     Spinner spinner;
     ArrayAdapter<CharSequence> spinnerAdapter;
     int quesCnt=0;
@@ -91,15 +90,11 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(adapterView.getContext(), "right!", Toast.LENGTH_LONG).show();
                             answerdQues++;
                             correctanswers++;
-                          //  if(answerdQues == quesCnt)
-                          //      finishRound(view, correctanswers, quesCnt);
-                          //  getQuestion(view);
+
                         } else {
                             Toast.makeText(adapterView.getContext(), "wrong!", Toast.LENGTH_LONG).show();
                             answerdQues++;
-                           // if(answerdQues == quesCnt)
-                              //  finishRound(view, correctanswers, quesCnt);
-                          //  getQuestion(view);
+
                         }
 
                         if(answerdQues == quesCnt){//round finished
@@ -115,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-        public void finishRound(View view, int score, int quesNum){
 
-        }
     public void getQuestion(View view) {
 
         spinner.setVisibility(View.GONE);
