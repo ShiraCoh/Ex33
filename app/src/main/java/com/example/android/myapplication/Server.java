@@ -1,17 +1,13 @@
 package com.example.android.myapplication;
 
 import android.util.Log;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-
 import cz.msebera.android.httpclient.Header;
 
 public class Server {
@@ -40,7 +36,7 @@ public class Server {
                     Collections.swap(answers, index1, index2);
                 }
             } catch (Exception e){
-                Log.e("error", e.toString());
+                Log.e("There's an error", e.toString());
             }
         }
     }
